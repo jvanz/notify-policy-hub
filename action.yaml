@@ -11,12 +11,15 @@ runs:
   using: "composite"
   steps:
     - name: trigger policy hub update
+      shell: bash
       run: |
         export TAG=$(echo $GITHUB_REF | sed -e "s|refs/tags/||")
-        curl \
+        HTTP_CODE=$(curl \
+          -s -o /dev/null \
           --user "flavio:${{ inputs.PAT }}" \
+          -w "%{http_code}" \
           -X POST \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/flavio/policy-hub/actions/workflows/update-policy.yml/dispatches \
-          -d '{"ref":"main", "inputs": {"repository": "'${GITHUB_REPOSITORY}'", "tag": "'${TAG}'"}}'
-      shell: bash
+          -d '{"ref":"main", "inputs": {"repository": "'${GITHUB_REPOSITORY}'", "tag": "'${TAG}'"}}')
+        (( $HTTP_CODE == 204 ))
