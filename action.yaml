@@ -10,6 +10,9 @@ inputs:
   PAT:
     description: GitHub Pesonal Access Token
     required: true
+  OCITARGET:
+    description: "OCI target used in the signature verification"
+    required: true
 runs:
   using: "composite"
   steps:
@@ -24,5 +27,5 @@ runs:
           -X POST \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/kubewarden/policy-hub/actions/workflows/update-policy.yml/dispatches \
-          -d '{"ref":"main", "inputs": {"repository": "'${GITHUB_REPOSITORY}'", "tag": "'${TAG}'"}}')
+          -d '{"ref":"main", "inputs": {"repository": "'${GITHUB_REPOSITORY}'", "tag": "'${TAG}'", "oci-target":"${{ inputs.OCITARGET }}"}}')
         (( $HTTP_CODE == 204 ))
