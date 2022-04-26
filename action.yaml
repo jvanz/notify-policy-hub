@@ -26,6 +26,6 @@ runs:
           -w "%{http_code}" \
           -X POST \
           -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/kubewarden/policy-hub/actions/workflows/update-policy.yml/dispatches \
+          https://api.github.com/repos/jvanz/policy-hub/actions/workflows/update-policy.yml/dispatches \
           -d '{"ref":"main", "inputs": {"repository": "'${GITHUB_REPOSITORY}'", "tag": "'${TAG}'", "oci-target":"${{ inputs.OCITARGET }}"}}')
         (( $HTTP_CODE == 204 ))
